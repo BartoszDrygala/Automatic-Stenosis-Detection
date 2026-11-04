@@ -9,4 +9,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 
 #For now
-CMD ["echo", "The container is running!"]
+CMD ["python", "src/main.py"]

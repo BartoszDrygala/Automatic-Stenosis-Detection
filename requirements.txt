@@ -20,7 +20,7 @@ matplotlib-inline==0.2.2
 nest-asyncio2==1.7.4
 networkx==3.7
 numpy==2.5.4
-opencv-python==5.0.0.93
+opencv-python-headless==5.0.0.93
 packaging==26.3
 parso==0.8.7
 pexpect==4.9.0
