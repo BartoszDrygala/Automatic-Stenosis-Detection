@@ -3,3 +3,4 @@ Datasets/
 __pycache__/
 .DS_Store/
 testing.ipynb
+.pytest_cache/

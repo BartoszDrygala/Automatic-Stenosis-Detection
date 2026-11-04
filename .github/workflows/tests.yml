@@ -1,0 +1,30 @@
+name: Stenosis tests
+
+on:
+    push:
+        branches: [main, development]
+    workflow_dispatch:
+
+permissions: 
+    contents: read
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v6
+
+          - name: Set up Python 
+            uses: actions/setup-python@v7
+            with: 
+                python-version: "3.13.15"
+
+          - name: Install dependencies
+            run: |
+                python -m pip install upgrade pip
+                python -m pip install -r requirements.txt
+
+          - name: Run tests
+            run: python -m pytest -v
