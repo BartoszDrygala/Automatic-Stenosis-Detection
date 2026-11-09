@@ -5,3 +5,4 @@ __pycache__/
 testing.ipynb
 .pytest_cache/
 data/output/
+results/

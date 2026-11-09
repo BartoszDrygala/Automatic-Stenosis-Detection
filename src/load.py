@@ -19,10 +19,10 @@ def load_annotations(input_path:str | Path) -> list:
 
 
 def main():
-
+    #temporary test
     project_root = Path(__file__).resolve().parent.parent
     number = 1
-    INPUT_PATH = project_root / "data" / "output" / "annotations" / f"{number}.json"
+    INPUT_PATH = project_root / "results" / "annotations" / f"{number}.json"
     INPUT_MASK_PATH = project_root / "data" / "masks" / f"{number}.png"
     mask = cv2.imread(INPUT_MASK_PATH, cv2.IMREAD_GRAYSCALE)
     det = load_annotations(INPUT_PATH)

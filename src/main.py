@@ -76,7 +76,7 @@ def main():
 
     INPUT_MASK_PATH = project_root / "data" / "masks" / name
     INPUT_IMAGE_PATH = project_root / "data" / "images" / name
-    OUTPUT_PATH = project_root / "data" / "output"
+    OUTPUT_PATH = project_root / "results"
     OUTPUT_IMG = OUTPUT_PATH / "graphics" / name
     OUTPUT_JSON = OUTPUT_PATH / "annotations" / f"{number}.json"
 
