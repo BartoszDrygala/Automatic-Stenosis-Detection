@@ -1,7 +1,7 @@
 .venv/
 Datasets/
 __pycache__/
-.DS_Store/
+.DS_Store
 testing.ipynb
 .pytest_cache/
 data/output/

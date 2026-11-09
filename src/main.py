@@ -5,6 +5,7 @@ from plots import plot_stenosis, plot_overlay, visualize_paths
 from skeletonize import perform_skeletonization
 from skeletons_postprocessing import perform_skeleton_postprocessing
 from stenosis import detect_all_stenosis
+from save import save_annotations
 
 
 
@@ -52,8 +53,7 @@ def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
         paths_img = visualize_paths(mask, skeleton, paths)
     
     # make it return all the plots also so its convinient for the user
-    return stenosis_image, overlay, paths_img
-
+    return stenosis_image, overlay, paths_img, detections
 
 
 #***************************************************************
@@ -71,20 +71,33 @@ def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
 #***************************************************************
 def main():
     number = 1
+    name = f"{number}.png"
     project_root = Path(__file__).resolve().parent.parent
-    mask_path = project_root / "data" / "masks" / f"{number}.png"
-    image_path = project_root / "data" / "images" / f"{number}.png"
 
-    mask = cv2.imread(str(mask_path), cv2.IMREAD_GRAYSCALE)
-    image = cv2.imread(str(image_path), cv2.IMREAD_GRAYSCALE)
+    INPUT_MASK_PATH = project_root / "data" / "masks" / name
+    INPUT_IMAGE_PATH = project_root / "data" / "images" / name
+    OUTPUT_PATH = project_root / "data" / "output"
+    OUTPUT_IMG = OUTPUT_PATH / "annotations" / name
+    OUTPUT_JSON = OUTPUT_PATH / "graphics" / f"{number}.json"
+
+    #assure directoriy existance
+    OUTPUT_IMG.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    
+    mask = cv2.imread(INPUT_MASK_PATH, cv2.IMREAD_GRAYSCALE)
+    image = cv2.imread(INPUT_IMAGE_PATH, cv2.IMREAD_GRAYSCALE)
 
     if mask is None or image is None:
-        raise FileNotFoundError(f"Could not read mask or image: {mask_path}, {image_path}")
+        raise FileNotFoundError(f"Could not read mask or image: {INPUT_MASK_PATH}, {INPUT_IMAGE_PATH}")
 
-    stenosis, overlay, paths = find_stenosis(mask, image)
+    stenosis, overlay, paths, detections = find_stenosis(mask, image)
     stenosis.show()
     overlay.show()
     paths.show()
+
+    stenosis.savefig(OUTPUT_IMG)
+    save_annotations(OUTPUT_JSON, detections, number)
+
 
 if __name__ == "__main__":
     main()
