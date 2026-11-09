@@ -9,6 +9,12 @@ class NumpyEncoder(json.JSONEncoder):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
 
+        if isinstance(obj, (set, frozenset)):
+            return sorted(obj)
+
+        if isinstance(obj, np.bool_):
+            return bool(obj)
+
         if isinstance(obj, np.integer):
             return int(obj)
 
@@ -18,7 +24,7 @@ class NumpyEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-def save_annotations(PATH:str | os.PathLike[str], detections:list, image_name:str) -> None:
+def save_annotations(PATH:str | os.PathLike[str], detections:list, image_name:str | int) -> None:
     """
     Saving found stenosis regions into .json file.
 
@@ -28,8 +34,8 @@ def save_annotations(PATH:str | os.PathLike[str], detections:list, image_name:st
         A path to an output directory
     detections : list
         List of detected stenosis regions
-    image_name : str
-        Name of the image
+    image_name : str | int
+        Name or identifier of the image
 
     Returns
     -------
@@ -48,9 +54,14 @@ def save_annotations(PATH:str | os.PathLike[str], detections:list, image_name:st
             "orig_idx": det["orig_idx"],
             "severity": det["severity"],
             "contour": det["contour"],
+            "left": det["left"],
+            "right": det["right"],
+            "g_set": det["g_set"],
+            "l_set": det["l_set"]
         }
 
         output["detections"].append(saved_detection)
-    # "w" is for writing
+
+    serialized_output = json.dumps(output, indent=4, cls=NumpyEncoder)
     with open(PATH, "w") as file:
-        json.dump(output, file, indent=4, cls = NumpyEncoder)
+        file.write(serialized_output)

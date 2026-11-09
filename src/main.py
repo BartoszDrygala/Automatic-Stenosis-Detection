@@ -77,8 +77,8 @@ def main():
     INPUT_MASK_PATH = project_root / "data" / "masks" / name
     INPUT_IMAGE_PATH = project_root / "data" / "images" / name
     OUTPUT_PATH = project_root / "data" / "output"
-    OUTPUT_IMG = OUTPUT_PATH / "annotations" / name
-    OUTPUT_JSON = OUTPUT_PATH / "graphics" / f"{number}.json"
+    OUTPUT_IMG = OUTPUT_PATH / "graphics" / name
+    OUTPUT_JSON = OUTPUT_PATH / "annotations" / f"{number}.json"
 
     #assure directoriy existance
     OUTPUT_IMG.parent.mkdir(parents=True, exist_ok=True)
