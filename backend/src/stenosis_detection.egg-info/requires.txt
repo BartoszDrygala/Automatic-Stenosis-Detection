@@ -1,0 +1,15 @@
+numpy
+opencv-python-headless
+scikit-image
+matplotlib
+
+[api]
+fastapi
+uvicorn[standard]
+python-multipart
+
+[dev]
+pytest
+pytest-cov
+httpx
+ruff

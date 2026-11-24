@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stenosis-detection"
+version = "0.1.0"
+description = "Automatic stenosis detection in coronary angiography images"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "opencv-python-headless",
+    "scikit-image",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "httpx",
+    "ruff",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88

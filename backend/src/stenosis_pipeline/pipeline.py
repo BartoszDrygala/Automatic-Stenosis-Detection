@@ -1,4 +1,5 @@
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 from .visualization import plot_stenosis, plot_overlay, visualize_paths
@@ -42,18 +43,7 @@ def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
     distances = cv2.distanceTransform((mask > 0).astype(np.uint8), cv2.DIST_L2, 5)
     detections = detect_all_stenosis(paths, distances, mask)
 
-    #if user gave original image and wants additional graphs
-    if image is not None:
-        stenosis_image = plot_stenosis(mask, detections, image)
-        overlay = plot_overlay(image, skeleton, mask)
-        paths_img = visualize_paths(mask, skeleton, paths, image)
-    else:
-        stenosis_image = plot_stenosis(mask, detections)
-        overlay = plot_overlay(mask, skeleton)
-        paths_img = visualize_paths(mask, skeleton, paths)
-    
-    # make it return all the plots also so its convinient for the user
-    return stenosis_image, overlay, paths_img, detections
+    return detections
 
 
 #***************************************************************
@@ -72,11 +62,11 @@ def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
 def main():
     number = 1
     name = f"{number}.png"
-    project_root = Path(__file__).resolve().parent.parent.parent
+    project_root = Path(__file__).resolve().parent.parent.parent.parent
 
     INPUT_MASK_PATH = project_root / "data" / "masks" / name
     INPUT_IMAGE_PATH = project_root / "data" / "images" / name
-    OUTPUT_PATH = project_root / "results"
+    OUTPUT_PATH = project_root / "data" / "results"
     OUTPUT_IMG = OUTPUT_PATH / "graphics" / name
     OUTPUT_JSON = OUTPUT_PATH / "annotations" / f"{number}.json"
 
@@ -90,14 +80,26 @@ def main():
     if mask is None or image is None:
         raise FileNotFoundError(f"Could not read mask or image: {INPUT_MASK_PATH}, {INPUT_IMAGE_PATH}")
 
-    stenosis, overlay, paths, detections = find_stenosis(mask, image)
-    stenosis.show()
-    overlay.show()
-    paths.show()
+    detections = find_stenosis(mask, image)
+
+    #temporary so the visualization works
+    skeleton = perform_skeletonization(mask)
+    paths = perform_skeleton_postprocessing(skeleton)
+
+    #if user gave original image and wants additional graphs
+    if image is not None:
+        stenosis_image = plot_stenosis(mask, detections, image)
+        overlay = plot_overlay(image, skeleton, mask)
+        paths_image = visualize_paths(mask, skeleton, paths, image)
+    else:
+        stenosis_image = plot_stenosis(mask, detections)
+        overlay = plot_overlay(mask, skeleton)
+        paths_image = visualize_paths(mask, skeleton, paths)
 
     #comment them out later
-    stenosis.savefig(OUTPUT_IMG)
+    stenosis_image.savefig(OUTPUT_IMG)
     save_annotations(OUTPUT_JSON, detections, number)
+    plt.show(block=True)
 
 
 if __name__ == "__main__":

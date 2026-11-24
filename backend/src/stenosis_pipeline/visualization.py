@@ -203,7 +203,7 @@ def visualize_paths(mask:np.ndarray, skeleton:np.ndarray, paths:list, image:np.n
         Figure containing the visualization
     """
     if image is not None:
-        plt.figure(figsize=(10,10))
+        fig = plt.figure(figsize=(10,10))
         size_a = 2
         size_b = 2
         c = 1
@@ -213,7 +213,7 @@ def visualize_paths(mask:np.ndarray, skeleton:np.ndarray, paths:list, image:np.n
         plt.imshow(image, cmap="gray")
         plt.axis("off")
     else:
-        plt.figure(figsize=(10,3))
+        fig = plt.figure(figsize=(10,3))
         size_a = 1
         size_b = 3
         c = 0
@@ -246,4 +246,5 @@ def visualize_paths(mask:np.ndarray, skeleton:np.ndarray, paths:list, image:np.n
     plt.axis("off")
 
     plt.tight_layout()
-    return plt
+
+    return plt.gcf()
