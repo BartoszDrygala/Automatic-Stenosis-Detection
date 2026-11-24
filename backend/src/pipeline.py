@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
 from pathlib import Path
-from plots import plot_stenosis, plot_overlay, visualize_paths
-from skeletonize import perform_skeletonization
-from skeletons_postprocessing import perform_skeleton_postprocessing
-from stenosis import detect_all_stenosis
-from save import save_annotations
+from .visualization import plot_stenosis, plot_overlay, visualize_paths
+from .skeletonization import perform_skeletonization
+from .postprocessing import perform_skeleton_postprocessing
+from .detection import detect_all_stenosis
+from .save import save_annotations
 
 
 
@@ -72,7 +72,7 @@ def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
 def main():
     number = 1
     name = f"{number}.png"
-    project_root = Path(__file__).resolve().parent.parent
+    project_root = Path(__file__).resolve().parent.parent.parent
 
     INPUT_MASK_PATH = project_root / "data" / "masks" / name
     INPUT_IMAGE_PATH = project_root / "data" / "images" / name
@@ -95,6 +95,7 @@ def main():
     overlay.show()
     paths.show()
 
+    #comment them out later
     stenosis.savefig(OUTPUT_IMG)
     save_annotations(OUTPUT_JSON, detections, number)
 

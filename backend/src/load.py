@@ -3,7 +3,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
-from plots import plot_stenosis
+from visualization import plot_stenosis
 
 def load_annotations(input_path:str | Path) -> list:
     with open(input_path, "r") as file:
