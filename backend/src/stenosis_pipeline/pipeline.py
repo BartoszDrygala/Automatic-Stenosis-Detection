@@ -18,7 +18,7 @@ from .save import save_annotations
 # 4. Detections - final detections of stenosis ready for plotting
 #***************************************************************
 
-def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
+def find_stenosis(mask:np.ndarray):
     """
     Finding and marking stenosis regions and giving some utilities helpful for debugging
 
@@ -26,17 +26,11 @@ def find_stenosis(mask:np.ndarray, image:np.ndarray = None):
     ----------
     mask : np.ndarray
         Vessel mask
-    image : np.ndarray, optional
-        Vessel image
 
     Returns
     -------
-    stenosis_image : np.ndarray
-        Stenosis visualization
-    overlay : np.ndarray
-        Skeleton overlayed on the provided image
-    paths_img : module
-        Visualization of the paths
+    detections:list[dict]
+        List of detections
     """
     skeleton = perform_skeletonization(mask)
     paths = perform_skeleton_postprocessing(skeleton)
@@ -80,7 +74,7 @@ def main():
     if mask is None or image is None:
         raise FileNotFoundError(f"Could not read mask or image: {INPUT_MASK_PATH}, {INPUT_IMAGE_PATH}")
 
-    detections = find_stenosis(mask, image)
+    detections = find_stenosis(mask)
 
     #temporary so the visualization works
     skeleton = perform_skeletonization(mask)

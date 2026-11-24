@@ -182,69 +182,74 @@ def plot_overlay(mask:np.ndarray, skeleton:np.ndarray, image:np.ndarray = None):
     return fig
 
 #used for visualizing separate paths in different colors
-def visualize_paths(mask:np.ndarray, skeleton:np.ndarray, paths:list, image:np.ndarray = None):
+def visualize_paths(
+    mask: np.ndarray,
+    skeleton: np.ndarray,
+    paths: list,
+    image: np.ndarray = None
+) -> plt.Figure:
     """
-    Visualizing separate paths of the skeleton
+    Visualize separate paths of the skeleton.
 
     Parameters
     ----------
     mask : np.ndarray
-        Vessel mask
+        Vessel mask.
     skeleton : np.ndarray
-        Skeleton of the vessel
+        Skeleton of the vessel.
     paths : list
-        List of subsequent paths of the skeleton
-    image : np.ndarray
-        Vessel image
+        List of subsequent paths of the skeleton.
+    image : np.ndarray, optional
+        Original vessel image.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
-        Figure containing the visualization
+        Figure containing the visualization.
     """
+
+    # Create the figure and its axes
     if image is not None:
-        fig = plt.figure(figsize=(10,10))
-        size_a = 2
-        size_b = 2
-        c = 1
+        fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+        axes = axes.flatten()
+
         # Original image
-        plt.subplot(size_a, size_b, c)
-        plt.title("Original Image")
-        plt.imshow(image, cmap="gray")
-        plt.axis("off")
+        axes[0].imshow(image, cmap="gray")
+        axes[0].set_title("Original Image")
+        axes[0].axis("off")
+
+        offset = 1
+
     else:
-        fig = plt.figure(figsize=(10,3))
-        size_a = 1
-        size_b = 3
-        c = 0
+        fig, axes = plt.subplots(1, 3, figsize=(10, 3))
+        offset = 0
 
     # Mask
-    plt.subplot(size_a, size_b, c + 1)
-    plt.title("Mask")
-    plt.imshow(mask, cmap='gray')
-    plt.axis("off")
+    axes[offset].imshow(mask, cmap="gray")
+    axes[offset].set_title("Mask")
+    axes[offset].axis("off")
 
     # Skeleton
-    plt.subplot(size_a, size_b, c + 2)
-    plt.title("Skeleton")
-    plt.imshow(skeleton, cmap='gray')
-    plt.axis("off")
+    axes[offset + 1].imshow(skeleton, cmap="gray")
+    axes[offset + 1].set_title("Skeleton")
+    axes[offset + 1].axis("off")
 
     # Paths (colored)
-    plt.subplot(size_a, size_b, c + 3)
-    plt.title("Extracted Paths")
-
-    canvas = np.zeros((skeleton.shape[0], skeleton.shape[1], 3), dtype=np.uint8)
+    canvas = np.zeros(
+        (skeleton.shape[0], skeleton.shape[1], 3),
+        dtype=np.uint8
+    )
 
     for path in paths:
         color = [random.randint(50, 255) for _ in range(3)]
 
-        for (x, y) in path:
-            canvas[y, x] = color  #reverse order cuz row, column i think
+        for x, y in path:
+            canvas[y, x] = color  # Reverse order: row, column
 
-    plt.imshow(canvas)
-    plt.axis("off")
+    axes[offset + 2].imshow(canvas)
+    axes[offset + 2].set_title("Extracted Paths")
+    axes[offset + 2].axis("off")
 
-    plt.tight_layout()
+    fig.tight_layout()
 
-    return plt.gcf()
+    return fig

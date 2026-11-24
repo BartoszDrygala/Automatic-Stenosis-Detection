@@ -1,6 +1,6 @@
 
-from backend.src.stenosis_pipeline.skeletonization import perform_skeletonization
-from backend.src.stenosis_pipeline.visualization import visualize_paths
+from stenosis_pipeline.skeletonization import perform_skeletonization
+from stenosis_pipeline.visualization import visualize_paths
 import matplotlib.pyplot as plt
 import numpy as np
 

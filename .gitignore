@@ -6,3 +6,4 @@ testing.ipynb
 .pytest_cache/
 data/output/
 results/
+*.egg-info/
