@@ -3,8 +3,6 @@ from stenosis_pipeline.visualization import plot_stenosis
 import base64
 from io import BytesIO
 
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 def create_visualization(mask, detections):

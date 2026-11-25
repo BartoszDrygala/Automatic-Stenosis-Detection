@@ -34,8 +34,21 @@ async def detect_stenosis(file:UploadFile = File(...)):
 
     image_decoded = np.frombuffer(content, dtype=np.uint8)
     mask = cv2.imdecode(image_decoded, cv2.IMREAD_GRAYSCALE)
+
+    if mask is None:
+        raise HTTPException(
+        status_code=400,
+        detail="Could not decode uploaded image."
+    )
     
     height, width = mask.shape
+
+    if height * width > 25_000_000:
+        raise HTTPException(
+        status_code=400,
+        detail="Image dimensions are too large."
+    )
+
     detections = await run_in_threadpool(process_mask, mask)
 
     visualization = await run_in_threadpool(create_visualization, mask, detections)
