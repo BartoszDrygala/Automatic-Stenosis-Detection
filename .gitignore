@@ -1,9 +1,29 @@
+# Python
 .venv/
-Datasets/
+venv/
 __pycache__/
-.DS_Store
-testing.ipynb
+*.py[cod]
+*.egg-info/
 .pytest_cache/
+.ruff_cache/
+notebooks/
+
+# Env variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Data
+Datasets/
+data/raw/
+data/processed/
 data/output/
 results/
-*.egg-info/
+
+# Logs
+*.log
